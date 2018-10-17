@@ -21,12 +21,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @FnFeature(FlowFeature.class)
 public class Booking {
 
     private final String destinationRecommandationID = "01CT153WCRNG8G00GZJ000006B";
     private final String forecastID = "01CT17YHV5NG8G00GZJ000007V";
+    private final String quotationID = "01CT168S17NG8G00GZJ0000076";
 
     public String book(int numberOfDestination) {
 
@@ -62,6 +64,39 @@ public class Booking {
 
         destinations = Arrays.stream(destinationsWithForecastsFlowFutures).map(FlowFuture::get).collect(Collectors.toList());
         destinationsAsJson = marshall(destinations);
+
+        FnFunction<String> quotation = FnFunction.of(quotationID);
+
+        Function<Destination, FlowFuture<Destination>> populateWithQuotation =
+                destination -> quotation.apply(destination.getName())
+                        .thenApply(HttpResponse::getBodyAsBytes)
+                        .thenApply(String::new)
+                        .thenApply(Integer::parseInt)
+                        .thenApply(destination::withPrice);
+
+        List<FlowFuture<Destination>> destinationsWithQuotationsFlowFutures =
+                destinations.stream()
+                        .map(populateWithQuotation)
+                        .collect(Collectors.toList());
+
+        Flows.currentFlow().allOf(destinationsWithQuotationsFlowFutures.toArray(new FlowFuture[]{})).get();
+
+        List<Destination> destinationsWithQuotations =
+                destinationsWithQuotationsFlowFutures
+                        .stream()
+                        .map(FlowFuture::get)
+                        .collect(Collectors.toList());
+
+        Map<String, String> forecastPerDestination =
+                Arrays.stream(destinationsWithForecastsFlowFutures)
+                        .map(FlowFuture::get)
+                        .collect(Collectors.toMap(Destination::getName, Destination::getForecast));
+
+        destinationsWithQuotations
+                .forEach(destination ->
+                        destination.setForecast(forecastPerDestination.get(destination.getName())));
+
+        destinationsAsJson = marshall(destinationsWithQuotations);
 
         return destinationsAsJson;
     }
