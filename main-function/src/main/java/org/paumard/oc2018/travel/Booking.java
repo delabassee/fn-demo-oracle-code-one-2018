@@ -13,10 +13,7 @@ import org.paumard.oc2018.travel.model.Destination;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -72,7 +69,8 @@ public class Booking {
                         .thenApply(HttpResponse::getBodyAsBytes)
                         .thenApply(String::new)
                         .thenApply(Integer::parseInt)
-                        .thenApply(destination::withPrice);
+                        .thenApply(destination::withPrice)
+                        .exceptionally(t -> null);
 
         List<FlowFuture<Destination>> destinationsWithQuotationsFlowFutures =
                 destinations.stream()
@@ -85,6 +83,7 @@ public class Booking {
                 destinationsWithQuotationsFlowFutures
                         .stream()
                         .map(FlowFuture::get)
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList());
 
         Map<String, String> forecastPerDestination =
