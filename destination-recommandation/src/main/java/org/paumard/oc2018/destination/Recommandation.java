@@ -30,10 +30,9 @@ public class Recommandation {
             );
 
 
-    public String recommand(String input) throws JsonProcessingException {
+    public String recommand(int input) throws JsonProcessingException {
 
-        int n = Integer.parseInt(input);
-        n = Integer.min(destinations.size(), n);
+        int n = Integer.min(destinations.size(), input);
 
         List<Destination> destinations = new ArrayList<>(this.destinations);
         Collections.shuffle(destinations);
