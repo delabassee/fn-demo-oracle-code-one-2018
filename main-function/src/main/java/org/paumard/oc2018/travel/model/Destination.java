@@ -1,8 +1,11 @@
 package org.paumard.oc2018.travel.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Destination {
+public class Destination implements Serializable {
+
+    final long serialVersionUID = 1476176007496262807L;
 
     private String name;
     private int price;
