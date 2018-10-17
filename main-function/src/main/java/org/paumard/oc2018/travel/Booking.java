@@ -1,21 +1,31 @@
 package org.paumard.oc2018.travel;
 
 import com.fnproject.fn.api.FnFeature;
+import com.fnproject.fn.api.Headers;
+import com.fnproject.fn.api.flow.FlowFuture;
+import com.fnproject.fn.api.flow.Flows;
+import com.fnproject.fn.api.flow.HttpMethod;
+import com.fnproject.fn.api.flow.HttpResponse;
 import com.fnproject.fn.runtime.flow.FlowFeature;
-import org.paumard.oc2018.travel.model.Destination;
-
-import java.util.List;
 
 @FnFeature(FlowFeature.class)
 public class Booking {
 
-    public List<Destination> book(int numberOfDestination) {
+    private final String destinationRecommandationID = "01CT153WCRNG8G00GZJ000006B";
 
-        Destination paris = Destination.of("Paris");
-        Destination brussels = Destination.of("Brussels");
+    public String book(int numberOfDestination) {
 
-        List<Destination> destinations = List.of(paris, brussels);
+        FlowFuture<HttpResponse> httpResponseFlowFuture =
+                Flows.currentFlow().invokeFunction(
+                        destinationRecommandationID, HttpMethod.POST, Headers.emptyHeaders(),
+                        numberOfDestination);
 
-        return destinations;
+        String destinationsAsJson =
+                httpResponseFlowFuture
+                        .thenApply(HttpResponse::getBodyAsBytes)
+                        .thenApply(String::new)
+                        .get();
+
+        return destinationsAsJson;
     }
 }
