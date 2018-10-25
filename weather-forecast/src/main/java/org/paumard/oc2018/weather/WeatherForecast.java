@@ -28,15 +28,19 @@ public class WeatherForecast {
 
     public String forecast(String destinationName) throws TimeoutException {
 
+        String forecast[] = new String[] {
+                "windy", "snowy", "cold", "hot", "rainy", "mild", "foggy", "stormy" };
+
         Random random = new Random();
         int waitingTime = 100 + random.nextInt(100);
         if (waitingTime < 150) {
             waitFor(waitingTime);
         } else {
-            throw new TimeoutException("No forecast for you!");
+            throw new TimeoutException("Unable to get forecast!");
         }
 
-        return "This is the weather for " + destinationName;
+        return "Weather will be " + forecast[random.nextInt(7)];
+
     }
 
     private void waitFor(int waitingTime) {

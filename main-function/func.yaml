@@ -1,12 +1,12 @@
 schema_version: 20180708
-name: travelbooking
-version: 0.0.53
+name: rec
+version: 0.0.2
 runtime: java
 build_image: fnproject/fn-java-fdk-build:jdk9-1.0.72
-run_image: fnproject/fn-java-fdk:jdk9-1.0.72
-cmd: org.paumard.oc2018.travel.Booking::book
+run_image: fnproject/fn-java-fdk:jdk9-1.0.75
+cmd: org.paumard.oc2018.travel.Recommendation::get
 format: http-stream
 triggers:
-- name: travelbooking
+- name: agency
   type: http
-  source: /travelbooking
+  source: /agency

@@ -37,13 +37,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @FnFeature(FlowFeature.class)
-public class Booking {
+public class Recommendation {
 
-    private final String destinationRecommandationID = "01CT153WCRNG8G00GZJ000006B";
-    private final String forecastID = "01CT17YHV5NG8G00GZJ000007V";
-    private final String quotationID = "01CT168S17NG8G00GZJ0000076";
+    private final String destinationRecommandationID = "01CTNZYCVRNG8G00GZJ000000Y";
+    private final String quotationID = "01CTNZYHN9NG8G00GZJ0000010";
+    private final String forecastID = "01CTNZY2K5NG8G00GZJ000000W";
+	
 
-    public String book(int numberOfDestination) {
+    public String get(int numberOfDestination) {
 
         FnFunction<Integer> httpResponseFlowFuture = FnFunction.of(destinationRecommandationID);
 
