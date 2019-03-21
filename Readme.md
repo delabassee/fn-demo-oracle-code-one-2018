@@ -1,4 +1,4 @@
-# Example code for FN Project
+# Example code for Fn Project's Flow API
 
 This is the code for the live coding part of our talk about the Fn Project with David Delabassee.  
 
