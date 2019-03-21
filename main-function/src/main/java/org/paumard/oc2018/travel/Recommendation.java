@@ -39,11 +39,10 @@ import java.util.stream.Stream;
 @FnFeature(FlowFeature.class)
 public class Recommendation {
 
-    private final String destinationRecommandationID = "01CTNZYCVRNG8G00GZJ000000Y";
-    private final String quotationID = "01CTNZYHN9NG8G00GZJ0000010";
-    private final String forecastID = "01CTNZY2K5NG8G00GZJ000000W";
-	
-
+    private final String destinationRecommandationID = "01D6GVZ64SNG8G00GZJ0000055";
+    private final String quotationID = "01D6GVYSE5NG8G00GZJ0000053";
+    private final String forecastID = "01D6GVXYMDNG8G00GZJ000004Z";
+    
     public String get(int numberOfDestination) {
 
         FnFunction<Integer> httpResponseFlowFuture = FnFunction.of(destinationRecommandationID);

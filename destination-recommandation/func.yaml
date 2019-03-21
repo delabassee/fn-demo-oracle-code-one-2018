@@ -1,11 +1,10 @@
 schema_version: 20180708
 name: destinationrecommandation
-version: 0.0.1
+version: 0.0.2
 runtime: java
-build_image: fnproject/fn-java-fdk-build:jdk9-1.0.75
-run_image: fnproject/fn-java-fdk:jdk9-1.0.75
+build_image: fnproject/fn-java-fdk-build:jdk11-1.0.85
+run_image: fnproject/fn-java-fdk:jre11-1.0.85
 cmd: org.paumard.oc2018.destination.Recommandation::recommand
-format: http-stream
 triggers:
 - name: destinationRecommandation
   type: http
